@@ -186,7 +186,24 @@ def OCR_Project(file_path):
     #
     import pytesseract
     from PIL import Image
-    pytesseract.pytesseract.tesseract_cmd = r"C:\Python Programming\Optical Character Recognition\Final Project\tesseract.exe"
+
+    def resolve_tesseract_cmd():
+        import os
+        import shutil
+        from pathlib import Path
+        local = Path(__file__).with_name("tesseract.exe")
+        if local.exists():
+            return str(local)
+        env_cmd = os.environ.get("TESSERACT_CMD")
+        if env_cmd and Path(env_cmd).exists():
+            return env_cmd
+        return shutil.which("tesseract")
+
+    tesseract_cmd = resolve_tesseract_cmd()
+    if tesseract_cmd:
+        pytesseract.pytesseract.tesseract_cmd = tesseract_cmd
+    else:
+        raise FileNotFoundError("Tesseract not found. Install it and add to PATH or set TESSERACT_CMD.")
 
     img_file = file_path
     # no_noise = "D:\Coding\Python\CSE100 Project\no_noise.png"

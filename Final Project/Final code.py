@@ -102,9 +102,13 @@ cv2.imwrite('C:\Python Programming\Optical Character Recognition\Final Project\d
 #Rotation / Deskewing:
 
 # new = cv2.imread("img_rotated_path")
-new = cv2.imread("C:\Python Programming\Optical Character Recognition\Final Project\image01.png")
+new = cv2.imread(r"C:\Python Programming\Optical Character Recognition\Final Project\image_01.png")
+if new is None:
+    raise FileNotFoundError("Failed to load image for deskewing. Check the path to image_01.png.")
 def getSkewAngle(cvImage) -> float:
     # Prepare image, copy, convert to gray scale, blurr, and threshold
+    if cvImage is None:
+        raise ValueError("getSkewAngle received an empty image. Check the cv2.imread() result.")
     newImage = cvImage.copy()
     gray = cv2.cvtColor(newImage, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(gray, (9, 9), 0)
@@ -175,7 +179,24 @@ cv2.imwrite("C:\Python Programming\Optical Character Recognition\Final Project\i
 #
 import pytesseract
 from PIL import Image
-pytesseract.pytesseract.tesseract_cmd = r"C:\Python Programming\Optical Character Recognition\Final Project\tesseract.exe"
+
+def resolve_tesseract_cmd():
+    import os
+    import shutil
+    from pathlib import Path
+    local = Path(__file__).with_name("tesseract.exe")
+    if local.exists():
+        return str(local)
+    env_cmd = os.environ.get("TESSERACT_CMD")
+    if env_cmd and Path(env_cmd).exists():
+        return env_cmd
+    return shutil.which("tesseract")
+
+tesseract_cmd = resolve_tesseract_cmd()
+if tesseract_cmd:
+    pytesseract.pytesseract.tesseract_cmd = tesseract_cmd
+else:
+    raise FileNotFoundError("Tesseract not found. Install it and add to PATH or set TESSERACT_CMD.")
 
 img_file = "C:\Python Programming\Optical Character Recognition\Final Project\page_1.png"
 # no_noise = "D:\Coding\Python\CSE100 Project\no_noise.png"
@@ -188,7 +209,9 @@ print(ocr_result)
 
 import pytesseract
 import cv2
-image = cv2.imread("C:\Python Programming\Optical Character Recognition\Final Project\image01.png")
+image = cv2.imread(r"C:\Python Programming\Optical Character Recognition\Final Project\image_01.png")
+if image is None:
+    raise FileNotFoundError("Failed to load image for OCR. Check the path to image_01.png.")
 base_image = image.copy()
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 cv2.imwrite("C:\Python Programming\Optical Character Recognition\Final Project\grayimage.png", gray)

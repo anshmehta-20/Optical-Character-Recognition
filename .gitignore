@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+*.so
+*.egg-info/
+.venv/
+venv/
+ENV/
+env/
+build/
+dist/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Tesseract binaries/docs (use system install instead)
+Final Project/*.exe
+Final Project/*.dll
+Final Project/*.html
+Final Project/tessdata/
+Final Project/doc/
+
+# Generated OCR outputs
+Final Project/blur.png
+Final Project/box_new.png
+Final Project/boxes_img.png
+Final Project/dilate.png
+Final Project/dilated_image.png
+Final Project/eroded_image.png
+Final Project/grayimage.png
+Final Project/im_bw.png
+Final Project/image_with_border.png
+Final Project/inverted_image.png
+Final Project/kernal.png
+Final Project/no_borders.png
+Final Project/no_noiose.png
+Final Project/output_image.png
+Final Project/roi.png
+Final Project/rotated_fixed.png
+Final Project/thresh.png
